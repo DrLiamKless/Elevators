@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Building } from '../utils/models/Building';
 import BuildingStructure from './building/BuildingStructure';
+
+
+const Root = styled.div`
+  width: fit-content;
+  height: fit-content;
+`
 
 function Game() {
   const [building, setBuilding] = useState(new Building(5, 3));
   
   return (
-    <div>
+    <Root>
       <BuildingStructure building={building} />
-    </div>
+    </Root>
   );
 }
 
