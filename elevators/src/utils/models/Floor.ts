@@ -1,4 +1,4 @@
-type FloorState = "waiting" | "arrived" | "free";
+export type FloorState = "waiting" | "arrived" | "free";
 
 export class Floor {
   private _floorState: FloorState;
@@ -15,11 +15,11 @@ export class Floor {
     return this._floorState
   };
 
-  onCall(callFn: () => boolean) {
+  onElevatorCalledToFloor() {
       this._floorState = "waiting";
   }
 
-  onArrive() {
+  onElevatorArrivedToFloor() {
     this._floorState = "arrived";
   }
  

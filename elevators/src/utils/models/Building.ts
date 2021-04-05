@@ -84,10 +84,11 @@ export class Building {
     };
   }
 
-  callElevator(targetFloor: number) {
-    const closestElevator = this.detectClosestElevator(targetFloor);
+  callElevator(targetFloorNumber: number) {
+    // const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
+    const closestElevator = this.detectClosestElevator(targetFloorNumber);
     if (closestElevator) {
-      closestElevator.onCall(targetFloor);
+      closestElevator.onCall(targetFloorNumber);
       return closestElevator;
     } else {
       return false
