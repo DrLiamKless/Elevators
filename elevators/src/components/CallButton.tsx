@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
 
 const Button = styled.button`
@@ -7,9 +7,9 @@ const Button = styled.button`
   font-size: 5px;
 `
 
-function CallButton() {
+function CallButton ({ ...rest }: ComponentPropsWithoutRef<"button">) {
   return (
-    <Button>
+    <Button {...rest}>
       call button
     </Button>
   );

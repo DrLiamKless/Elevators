@@ -10,7 +10,7 @@ const Root = styled.div`
 `
 
 function Game() {
-  const [building, setBuilding] = useState(new Building(5, 3));
+  const [building, setBuilding] = useState(new Building(6, 3));
   
   return (
     <Root>

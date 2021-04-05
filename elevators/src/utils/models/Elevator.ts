@@ -5,7 +5,7 @@ export class Elevator {
   private _targetFloor: number = 0;
   private _currentFloor: number = 0;
 
-  constructor(private readonly id: string) {
+  constructor(readonly id: string) {
     return
   }
 

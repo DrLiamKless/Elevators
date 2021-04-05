@@ -1,32 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Building } from '../../utils/models/Building';
 import CallButton from '../CallButton';
-import Floor from './Floor';
+import ElevatorComponent from './ElevatorComponent';
+import FloorComponent from './FloorComponent';
 
-const FloorWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+const ElevatorsWrapper = styled.div`
+  position: absolute;
   display: flex;
-  align-items: center;
-  gap: 10px;
+`
+
+const FloorsWrapper = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+`
+
+const Root = styled.div`
+  position: relative;
 `
 
 function BuildingStructure({ building }: {building: Building}) {
-  
-  const floors = new Array(building.numberOfFloors).fill(0);
-  
+  const [elevatorsState, setElevatorsState] = useState(building.elevators);
+
+
+ const onElevatorCall = (floorNumber: number) => {
+    const CalledElevator = building.callElevator(floorNumber);
+    if(CalledElevator) {
+      setElevatorsState(prev => {
+        const updatedElevators = [...prev];
+        const elevatorIndex = updatedElevators.findIndex(elevator => elevator.id === CalledElevator.id);
+        updatedElevators.splice(elevatorIndex, 1, CalledElevator)
+        return updatedElevators;
+      })
+
+      return CalledElevator
+    } else {
+      return false
+    }
+  }
+
   return (
-    <div>
-      {floors.map(floor => {
-        return (
-          <FloorWrapper>
-            <Floor numberOfElevators={building.numberOfElevators}/>
-            <CallButton />
-          </FloorWrapper>
-        )
-      })}
-    </div>
+    <Root>
+
+      <FloorsWrapper>
+        {building.floors.map(floor => {
+          return (
+            <FloorComponent onCall={() => onElevatorCall(floor.floorNumber)} floor={floor}/>
+            )
+          })}
+      </FloorsWrapper>
+
+      <ElevatorsWrapper>
+        {elevatorsState.map(elevator => {
+          return (
+            <ElevatorComponent elevator={elevator}/>
+          )
+        })}
+      </ElevatorsWrapper>
+    </Root>
   );
 }
 
