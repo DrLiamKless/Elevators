@@ -83,7 +83,6 @@ export class Elevator {
 
   private backToBeFree() {
     if (this._targetFloor) {
-
       this._elevatorState = "free"
       this._targetFloor.backToBeFree();
       this._targetFloor = undefined;

@@ -116,9 +116,9 @@ export class Building {
     targetFloorNumber: number, 
   ) {
     const targetFloor = this.floors.find(floor => {
-      return (floor.floorNumber === targetFloorNumber) && floor.floorState === "call"}
+      return (floor.floorNumber === targetFloorNumber) && floor.floorState !== "arrived"}
     );
-    if (targetFloor?.floorState === "call") {
+    if (targetFloor) {
       const closestElevator = this.detectClosestElevator(targetFloorNumber);
       // const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
       if (closestElevator) {
@@ -132,7 +132,7 @@ export class Building {
         return false
         // TODO: add queue storage of the calls
       }
-    }
+    } return false;
   }
 
   callElevatorForQueueOrder() {

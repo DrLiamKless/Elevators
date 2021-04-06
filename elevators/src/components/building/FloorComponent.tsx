@@ -72,7 +72,9 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
   }, [])
 
   const onElevatorCallToFloor = () => {
-    const elevatorOnTheWay = onElevatorCall(floorState.floorNumber);
+    if (floorState.floorState === "call") {
+      const elevatorOnTheWay = onElevatorCall(floorState.floorNumber);
+    }
   }
   
   const shafts = new Array(floor.numberOfElevators).fill(0);
