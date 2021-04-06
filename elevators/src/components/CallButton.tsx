@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
-import { renderButtonBackgroundColor, renderButtonTitleStyling } from '../utils/callButton';
+import { renderButtonStyling, renderButtonTitleStyling } from '../utils/callButton';
 import { FloorState } from '../utils/models/Floor';
 
 const Button = styled.button<({floorState: FloorState})>`
@@ -12,11 +12,10 @@ const Button = styled.button<({floorState: FloorState})>`
   right: 0;
   transform: translateX(150%);
   outline: none;
-  border: 0.5px solid grey;
   box-sizing: border-box;
   padding: 5px 15px;
   border-radius: 2px;
-  ${({floorState}) => `${renderButtonBackgroundColor(floorState)} ${renderButtonTitleStyling(floorState)}`}
+  ${({floorState}) => `${renderButtonStyling(floorState)} ${renderButtonTitleStyling(floorState)}`}
 `
 
 function CallButton ({floorState, ...rest }: {floorState: FloorState} & ComponentPropsWithoutRef<"button">) {
