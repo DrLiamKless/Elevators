@@ -9,7 +9,7 @@ const Root = styled.div<({currentFloor: number})>`
   min-width: 20%;
   height: 50px;
   align-self: center;
-  transition: all 1s ease-in-out;
+  transition: all 1.001s linear;
   ${({currentFloor}) => `transform: translateY${`(-${(currentFloor+1)*100}%);`}`}; 
 `;
 
