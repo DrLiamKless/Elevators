@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Building } from '../../utils/models/Building';
-import CallButton from '../CallButton';
 import ElevatorComponent from './ElevatorComponent';
 import FloorComponent from './FloorComponent';
 
@@ -32,16 +31,28 @@ function BuildingStructure({ building }: {building: Building}) {
   }, [])
 
 
- const onElevatorCall = (floorNumber: number) => {
-   if (buildingState) {
-
+  const onElevatorCall = (floorNumber: number) => {
+    if (buildingState) {
      const CalledElevator = buildingState.callElevator(floorNumber);
      if(CalledElevator) {
        return CalledElevator
       } else {
         return false
       }
+    }
   }
+
+  const answerOrderFromQueue = () => {
+    if (buildingState) {
+      const CalledElevator = buildingState.callElevatorForQueueOrder();
+      if(CalledElevator) {
+        return CalledElevator
+       } else {
+         return false
+       }
+    } else {
+      return false
+    }
   }
 
   return (
@@ -54,7 +65,7 @@ function BuildingStructure({ building }: {building: Building}) {
           </FloorsWrapper>
           
           <ElevatorsWrapper>
-            {buildingState.elevators.map(elevator => <ElevatorComponent elevator={elevator} /> )}
+            {buildingState.elevators.map(elevator => <ElevatorComponent answerOrderFromQueue={answerOrderFromQueue} elevator={elevator} /> )}
           </ElevatorsWrapper>
 
         </Root>

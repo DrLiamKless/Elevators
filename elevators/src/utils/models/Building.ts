@@ -7,9 +7,10 @@ export class Building {
   
   readonly elevators: Elevator[];
   readonly floors: Floor[];
-  readonly numberOfFloors: number
-  readonly numberOfElevators: number
+  readonly numberOfFloors: number;
+  readonly numberOfElevators: number;
 
+  private _ordersQueue: number[] = [];
   private _onCallCallback?: (params?: any) => any;
 
   constructor(
@@ -57,7 +58,7 @@ export class Building {
     }
 
     return [...floorsArray];
-  }
+  };
 
   private detectClosestElevator(targetFloor: number) {
     let closestElevator: Elevator | undefined;
@@ -92,11 +93,30 @@ export class Building {
       console.log('didnt find');
       return false 
     };
+  };
+
+  private addToOrderQueue(floorNumber: number) {
+    if (!this._ordersQueue.includes(floorNumber)) {
+      this._ordersQueue.push(floorNumber);
+    }
+  }
+
+  private getOrderFromQueue() {
+    if (!!this._ordersQueue.length) {
+      const firstOrder = this._ordersQueue.shift();
+      if (typeof firstOrder === 'number') {
+        return firstOrder
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
   }
 
   set onCallCallback(fn: (params?: any) => any) {
     this._onCallCallback = () => fn(this);
-  }
+  };
 
   callElevator(
     targetFloorNumber: number, 
@@ -109,8 +129,19 @@ export class Building {
       closestElevator.call(targetFloor);
       return closestElevator;
     } else {
+      this.addToOrderQueue(targetFloorNumber)
       return false
       // TODO: add queue storage of the calls
+    }
+  }
+
+  callElevatorForQueueOrder() {
+    const orderFromQueue = this.getOrderFromQueue();
+    if (typeof orderFromQueue === 'number') {
+      const elevatorCalled = this.callElevator(orderFromQueue);
+      return elevatorCalled;
+    } else {
+      return false
     }
   }
 

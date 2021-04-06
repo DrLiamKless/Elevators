@@ -60,7 +60,7 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
   }, [])
 
   const onElevatorCallToFloor = () => {
-    onElevatorCall(floorState.floorNumber);
+    const elevatorOnTheWay = onElevatorCall(floorState.floorNumber);
   }
   
   const shafts = new Array(floor.numberOfElevators).fill(0);
@@ -75,7 +75,7 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
             )}
           </Shafts>
           <CallButton floorState={floorState?.floorState} onClick={onElevatorCallToFloor}/>
-          </FloorWrapper>
+        </FloorWrapper>
         )}
     </>
   );

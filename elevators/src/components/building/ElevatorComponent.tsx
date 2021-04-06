@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { createNoSubstitutionTemplateLiteral } from 'typescript';
 import { Elevator } from '../../utils/models/Elevator';
 
 const Root = styled.div`
@@ -8,7 +7,7 @@ const Root = styled.div`
   padding: 5px;
 `
 
-function ElevatorComponent({ elevator }: {elevator: Elevator}) {
+function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevator, answerOrderFromQueue: () => false | Elevator}) {
   const [elevatorState, setElevatorState] = useState<Elevator>();
 
   useEffect(() => {
@@ -29,6 +28,7 @@ function ElevatorComponent({ elevator }: {elevator: Elevator}) {
 
     elevator.onBackToFreeCallback = (updatedElevator: Elevator) => {
       // console.log('elevator is free again on floor!', updatedElevator.currentFloor);
+      answerOrderFromQueue();
       setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
     }
 
