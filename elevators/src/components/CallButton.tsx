@@ -1,5 +1,6 @@
 import React, { ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
+import { FloorState } from '../utils/models/Floor';
 
 const Button = styled.button`
   width: 100%;
@@ -7,10 +8,10 @@ const Button = styled.button`
   font-size: 5px;
 `
 
-function CallButton ({ ...rest }: ComponentPropsWithoutRef<"button">) {
+function CallButton ({floorState, ...rest }: {floorState: FloorState} & ComponentPropsWithoutRef<"button">) {
   return (
     <Button {...rest}>
-      call button
+      {floorState}
     </Button>
   );
 }

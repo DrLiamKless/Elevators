@@ -17,10 +17,17 @@ export class Floor {
 
   onElevatorCalledToFloor() {
       this._floorState = "waiting";
+      return this;
   }
 
   onElevatorArrivedToFloor() {
     this._floorState = "arrived";
+    return this;
+  }
+
+  onElevatorMovedFromFloor() {
+    this._floorState = "free";
+    return this;
   }
  
 }

@@ -23,8 +23,14 @@ function BuildingStructure({ building }: {building: Building}) {
   const [elevatorsState, setElevatorsState] = useState(building.elevators);
 
 
- const onElevatorCall = (floorNumber: number) => {
-    const CalledElevator = building.callElevator(floorNumber);
+ const onElevatorCall = (
+  floorNumber: number,
+  params?: {
+    onElevatorArriveFn?: (params?: any) => any,
+    onElevatorMoveFn?: (params?: any) => any,
+    onElevatorLeave?: (params?: any) => any,
+  }) => {
+    const CalledElevator = building.callElevator(floorNumber, params);
     if(CalledElevator) {
       setElevatorsState(prev => {
         const updatedElevators = [...prev];
@@ -32,7 +38,6 @@ function BuildingStructure({ building }: {building: Building}) {
         updatedElevators.splice(elevatorIndex, 1, CalledElevator)
         return updatedElevators;
       })
-
       return CalledElevator
     } else {
       return false
@@ -41,11 +46,10 @@ function BuildingStructure({ building }: {building: Building}) {
 
   return (
     <Root>
-
       <FloorsWrapper>
         {building.floors.map(floor => {
           return (
-            <FloorComponent onCall={() => onElevatorCall(floor.floorNumber)} floor={floor}/>
+            <FloorComponent onElevatorCall={onElevatorCall} floor={floor}/>
             )
           })}
       </FloorsWrapper>

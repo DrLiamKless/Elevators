@@ -18,34 +18,35 @@ export class Building {
 
     this.numberOfElevators = numberOfElevators;
     this.numberOfFloors = numberOfFloors;
-    this.elevators = Building.designElevatorsArray(numberOfElevators);
     this.floors = Building.designFloorsArray(numberOfFloors, numberOfElevators);
+    const initialFloorZero = this.floors[0];
+    this.elevators = Building.designElevatorsArray(numberOfElevators, initialFloorZero);
   }
 
-  static validateNumberOfFloors(floors: number) {
+  private static validateNumberOfFloors(floors: number) {
     const nameIsValid = floors >= Building.minimumFloors;
     if (!nameIsValid) {
       throw Error("The amount of floors given is not valid");
     }
   }
 
-  static validateNumberOfElevators(numberOfElevators: number) {
+  private static validateNumberOfElevators(numberOfElevators: number) {
     if (numberOfElevators < 2) {
       throw Error("The amount of elevators given is not valid");
     }
   }
 
-  static designElevatorsArray(numberOfElevators: number) {
+  private static designElevatorsArray(numberOfElevators: number, initialFloor: Floor) {
     const elevatorsArray: Elevator[] = [];
     for (let i = 0; i < numberOfElevators ; i++) {
-      const elevator = new Elevator(`elevatorId${i}`);
+      const elevator = new Elevator(`elevatorId${i}`, initialFloor);
       elevatorsArray.push(elevator);
     }
 
     return [...elevatorsArray];
   }
 
-  static designFloorsArray(numberOfFloors: number, numberOfElevators: number) {
+  private static designFloorsArray(numberOfFloors: number, numberOfElevators: number) {
     const floorsArray: Floor[] = [];
     for (let i = 0; i < numberOfFloors ; i++) {
       const floor = new Floor(i, numberOfElevators);
@@ -55,20 +56,17 @@ export class Building {
     return [...floorsArray];
   }
 
-  detectClosestElevator(targetFloor: number) {
+  private detectClosestElevator(targetFloor: number) {
     let closestElevator: Elevator | undefined;
     let closestDistance: number;
 
-    console.log(closestElevator);
     this.elevators.forEach(elevator => {
       if (!closestDistance) {
-        // console.log('first time');
         closestElevator = elevator
         closestDistance = Math.abs(elevator.currentFloor - targetFloor);
       };
       
       if (closestDistance && Math.abs(elevator.currentFloor - targetFloor) < closestDistance) {
-        // console.log('changed the closest one');
         closestElevator = elevator;
         closestDistance = Math.abs(elevator.currentFloor - targetFloor);
         return
@@ -76,7 +74,6 @@ export class Building {
     })
     
     if (closestElevator) {
-      // console.log('find!', closestElevator);
       return closestElevator
     } else { 
       console.log('didnt find');
@@ -84,11 +81,18 @@ export class Building {
     };
   }
 
-  callElevator(targetFloorNumber: number) {
-    // const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
+  callElevator(
+    targetFloorNumber: number, 
+    params?: {
+      onElevatorArriveFn?: (params?: any) => any,
+      onElevatorMoveFn?: (params?: any) => any,
+    }
+  ) {
+    const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
     const closestElevator = this.detectClosestElevator(targetFloorNumber);
-    if (closestElevator) {
-      closestElevator.onCall(targetFloorNumber);
+    
+    if (closestElevator && targetFloor) {
+      closestElevator.onCall(targetFloor, params);
       return closestElevator;
     } else {
       return false

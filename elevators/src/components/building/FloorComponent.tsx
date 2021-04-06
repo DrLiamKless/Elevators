@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Elevator } from '../../utils/models/Elevator';
 import { Floor } from '../../utils/models/Floor';
@@ -27,24 +27,47 @@ const Shaft = styled.div`
   padding: 5px;
 `
 
-function FloorComponent({ floor, onCall }: {floor: Floor, onCall:  () => false | Elevator}) {
+type FloorComponentProps = {
+  floor: Floor,
+  onElevatorCall: (
+    floorNumber: number,
+    params?: {
+    onElevatorArriveFn?: ((params?: any) => any) | undefined;
+    onElevatorMoveFn?: ((params?: any) => any) | undefined;
+    } | undefined
+  ) => false | Elevator
+}
 
-  const shafts = new Array(floor.numberOfElevators).fill(0);
-  
+function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
+  const [floorState, setFloorState] = useState(floor);
+
   const onElevatorCallToFloor = () => {
-    onCall();
+    onElevatorCall?.(
+      floor.floorNumber,
+      {
+        onElevatorArriveFn: () => {
+          const updatedFloor = floor.onElevatorArrivedToFloor();
+          setFloorState(() => updatedFloor);
+        }
+      }
+    );
   }
+  
+  const shafts = new Array(floor.numberOfElevators).fill(0);
 
   return (
-    <FloorWrapper>
-      <Shafts>
-          {shafts.map(shaft => 
-            <Shaft>shaft</Shaft>
+    <>
+      {floorState && (
+        <FloorWrapper>
+          <Shafts>
+            {shafts.map(shaft => 
+              <Shaft>shaft</Shaft>
             )}
-      </Shafts>
-      <CallButton onClick={onElevatorCallToFloor}/>
-      <div>{floor.floorNumber}</div>
-    </FloorWrapper>
+          </Shafts>
+          <CallButton floorState={floorState?.floorState} onClick={onElevatorCallToFloor}/>
+          </FloorWrapper>
+        )}
+    </>
   );
 }
 
