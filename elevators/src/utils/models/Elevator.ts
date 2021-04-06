@@ -1,6 +1,6 @@
 import { Floor } from "./Floor";
 
-type ElevatorState = "busy" | "arrived" | "free";
+export type ElevatorState = "busy" | "arrived" | "free";
 
 export class Elevator {
   private _elevatorState: ElevatorState = "free";

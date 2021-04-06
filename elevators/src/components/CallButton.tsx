@@ -1,48 +1,27 @@
 import React, { ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
+import { renderButtonBackgroundColor, renderButtonTitleStyling } from '../utils/callButton';
 import { FloorState } from '../utils/models/Floor';
 
-const Button = styled.button`
-  width: 50px;
+const Button = styled.button<({floorState: FloorState})>`
+  width: 80px;
   font-size: 10px;
   position: absolute;
+  text-align: center;
+  text-align: center;
   right: 0;
-  transform: translateX(200%);
+  transform: translateX(150%);
   outline: none;
   border: 0.5px solid grey;
-  padding: 5px;
-  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 5px 15px;
+  border-radius: 2px;
+  ${({floorState}) => `${renderButtonBackgroundColor(floorState)} ${renderButtonTitleStyling(floorState)}`}
 `
-
-const renderButtonBackgroundColor = (floorState: FloorState) => {
-  if (floorState === "call") {
-    return '#5BCD88'
-  } else if (floorState === "waiting") {
-    return '#ED484D'
-  } else if (floorState === "arrived") {
-    return 'rgba(255, 255, 255, 1)'
-  }
-}
-
-const renderButtonTitleColor = (floorState: FloorState) => {
-  if (floorState === "call") {
-    return 'white'
-  } else if (floorState === "waiting") {
-    return 'white'
-  } else if (floorState === "arrived") {
-    return '#5BCD88'
-  }
-}
 
 function CallButton ({floorState, ...rest }: {floorState: FloorState} & ComponentPropsWithoutRef<"button">) {
   return (
-    <Button 
-      style={{
-        backgroundColor: renderButtonBackgroundColor(floorState),
-        color: renderButtonTitleColor(floorState),
-      }} 
-      {...rest}
-    >
+    <Button floorState={floorState} {...rest}>
       {floorState}
     </Button>
   );

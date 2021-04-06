@@ -18,11 +18,14 @@ const FloorsWrapper = styled.div`
   position: relative;
   max-width: 60%;
   min-width: 60%;
+  background-color: white;
 `
 
 const Root = styled.div`
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   width: 100%;
   height: 100%;
