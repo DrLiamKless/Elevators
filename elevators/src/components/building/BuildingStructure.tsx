@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Building } from '../../utils/models/Building';
 import CallButton from '../CallButton';
@@ -20,48 +20,46 @@ const Root = styled.div`
 `
 
 function BuildingStructure({ building }: {building: Building}) {
-  const [elevatorsState, setElevatorsState] = useState(building.elevators);
+  const [buildingState, setBuildingState] = useState<Building>();
 
-
- const onElevatorCall = (
-  floorNumber: number,
-  params?: {
-    onElevatorArriveFn?: (params?: any) => any,
-    onElevatorMoveFn?: (params?: any) => any,
-    onElevatorLeave?: (params?: any) => any,
-  }) => {
-    const CalledElevator = building.callElevator(floorNumber, params);
-    if(CalledElevator) {
-      setElevatorsState(prev => {
-        const updatedElevators = [...prev];
-        const elevatorIndex = updatedElevators.findIndex(elevator => elevator.id === CalledElevator.id);
-        updatedElevators.splice(elevatorIndex, 1, CalledElevator)
-        return updatedElevators;
-      })
-      return CalledElevator
-    } else {
-      return false
+  useEffect(() => {
+    // TODO: Here set the onCallCallback, etc...
+    building.onCallCallback = () => {
+      // console.log('building just called the elvator!');
     }
+
+    setBuildingState(building);
+  }, [])
+
+
+ const onElevatorCall = (floorNumber: number) => {
+   if (buildingState) {
+
+     const CalledElevator = buildingState.callElevator(floorNumber);
+     if(CalledElevator) {
+       return CalledElevator
+      } else {
+        return false
+      }
+  }
   }
 
   return (
-    <Root>
-      <FloorsWrapper>
-        {building.floors.map(floor => {
-          return (
-            <FloorComponent onElevatorCall={onElevatorCall} floor={floor}/>
-            )
-          })}
-      </FloorsWrapper>
+    <>
+      {buildingState && (
+        <Root>
+          
+          <FloorsWrapper>
+            {buildingState.floors.map(floor => <FloorComponent onElevatorCall={onElevatorCall} floor={floor}/> )}
+          </FloorsWrapper>
+          
+          <ElevatorsWrapper>
+            {buildingState.elevators.map(elevator => <ElevatorComponent elevator={elevator} /> )}
+          </ElevatorsWrapper>
 
-      <ElevatorsWrapper>
-        {elevatorsState.map(elevator => {
-          return (
-            <ElevatorComponent elevator={elevator}/>
-          )
-        })}
-      </ElevatorsWrapper>
-    </Root>
+        </Root>
+      )}
+    </>
   );
 }
 

@@ -29,28 +29,38 @@ const Shaft = styled.div`
 
 type FloorComponentProps = {
   floor: Floor,
-  onElevatorCall: (
-    floorNumber: number,
-    params?: {
-    onElevatorArriveFn?: ((params?: any) => any) | undefined;
-    onElevatorMoveFn?: ((params?: any) => any) | undefined;
-    } | undefined
-  ) => false | Elevator
+  onElevatorCall: (floorNumber: number) => false | Elevator | undefined;
 }
 
 function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
   const [floorState, setFloorState] = useState(floor);
 
+  useEffect(() => {
+    floor.onArriveCallback = (updatedFloor: Floor) => {
+      // console.log(`floor ${updatedFloor.floorNumber} accepted elevator!`);
+      setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
+    }
+
+    floor.onCallCallback = (updatedFloor: Floor) => {
+      // console.log(`floor ${updatedFloor.floorNumber} called an elevator!`);
+      setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
+    }
+
+    floor.onMoveCallback = (updatedFloor: Floor) => {
+      // console.log(`floor ${updatedFloor.floorNumber} just sayd goodbye from elevator!`);
+      setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
+    }
+    
+    floor.onBackToFreeCallback = (updatedFloor: Floor) => {
+      // console.log(`floor ${updatedFloor.floorNumber} is free again!`);
+      setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
+    }
+
+    setFloorState(floor);
+  }, [])
+
   const onElevatorCallToFloor = () => {
-    onElevatorCall?.(
-      floor.floorNumber,
-      {
-        onElevatorArriveFn: () => {
-          const updatedFloor = floor.onElevatorArrivedToFloor();
-          setFloorState(() => updatedFloor);
-        }
-      }
-    );
+    onElevatorCall(floorState.floorNumber);
   }
   
   const shafts = new Array(floor.numberOfElevators).fill(0);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { createNoSubstitutionTemplateLiteral } from 'typescript';
 import { Elevator } from '../../utils/models/Elevator';
 
 const Root = styled.div`
@@ -8,7 +9,31 @@ const Root = styled.div`
 `
 
 function ElevatorComponent({ elevator }: {elevator: Elevator}) {
-  const [elevatorState, setElevatorState] = useState(elevator);
+  const [elevatorState, setElevatorState] = useState<Elevator>();
+
+  useEffect(() => {
+    elevator.onArriveCallback = (updatedElevator: Elevator) => {
+      // console.log('elevator arrived to floor!', updatedElevator.currentFloor);
+      setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
+    }
+
+    elevator.onCallCallback = (updatedElevator: Elevator) => {
+      // console.log('elevator called to floor!', updatedElevator.targetFloor.floorNumber);
+      setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
+    }
+
+    elevator.onMoveCallback = (updatedElevator: Elevator) => {
+      // console.log('elevator moved to floor!', updatedElevator.currentFloor);
+      setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
+    }
+
+    elevator.onBackToFreeCallback = (updatedElevator: Elevator) => {
+      // console.log('elevator is free again on floor!', updatedElevator.currentFloor);
+      setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
+    }
+
+    setElevatorState(elevator);
+  }, [])
 
   return (
     <>

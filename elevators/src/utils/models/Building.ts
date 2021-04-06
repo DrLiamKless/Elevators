@@ -3,11 +3,14 @@ import { Floor } from "./Floor";
 
 export class Building {
   static readonly minimumFloors: number = 4;
+  static readonly initialElevatorsFloor: number = 0;
   
   readonly elevators: Elevator[];
   readonly floors: Floor[];
   readonly numberOfFloors: number
   readonly numberOfElevators: number
+
+  private _onCallCallback?: (params?: any) => any;
 
   constructor(
       numberOfFloors: number, 
@@ -19,13 +22,13 @@ export class Building {
     this.numberOfElevators = numberOfElevators;
     this.numberOfFloors = numberOfFloors;
     this.floors = Building.designFloorsArray(numberOfFloors, numberOfElevators);
-    const initialFloorZero = this.floors[0];
-    this.elevators = Building.designElevatorsArray(numberOfElevators, initialFloorZero);
+    const initialFloor = this.floors[Building.initialElevatorsFloor];
+    this.elevators = Building.designElevatorsArray(numberOfElevators, initialFloor);
   }
 
   private static validateNumberOfFloors(floors: number) {
-    const nameIsValid = floors >= Building.minimumFloors;
-    if (!nameIsValid) {
+    const numberIsValid = (floors >= Building.minimumFloors) && (floors > this.initialElevatorsFloor);
+    if (!numberIsValid) {
       throw Error("The amount of floors given is not valid");
     }
   }
@@ -60,18 +63,28 @@ export class Building {
     let closestElevator: Elevator | undefined;
     let closestDistance: number;
 
-    this.elevators.forEach(elevator => {
-      if (!closestDistance) {
-        closestElevator = elevator
-        closestDistance = Math.abs(elevator.currentFloor - targetFloor);
-      };
-      
-      if (closestDistance && Math.abs(elevator.currentFloor - targetFloor) < closestDistance) {
-        closestElevator = elevator;
-        closestDistance = Math.abs(elevator.currentFloor - targetFloor);
-        return
-      }
-    })
+    const existingElevatorInFloor = this.elevators.find(elevator => {
+      return (elevator.currentFloor === targetFloor) && (elevator.elevatorState === "free")
+    });
+    if(existingElevatorInFloor) {
+      return existingElevatorInFloor;
+    } else {
+      this.elevators.forEach(elevator => {
+        if (elevator.elevatorState === "free") {
+          if (!closestDistance) {
+            closestElevator = elevator
+            closestDistance = Math.abs(elevator.currentFloor - targetFloor);
+            return;
+          } else if (Math.abs(elevator.currentFloor - targetFloor) < closestDistance) {
+            closestElevator = elevator;
+            closestDistance = Math.abs(elevator.currentFloor - targetFloor);
+            return;
+          }
+        } else {
+          return;
+        }
+      })
+    }
     
     if (closestElevator) {
       return closestElevator
@@ -81,18 +94,19 @@ export class Building {
     };
   }
 
+  set onCallCallback(fn: (params?: any) => any) {
+    this._onCallCallback = () => fn(this);
+  }
+
   callElevator(
     targetFloorNumber: number, 
-    params?: {
-      onElevatorArriveFn?: (params?: any) => any,
-      onElevatorMoveFn?: (params?: any) => any,
-    }
   ) {
     const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
     const closestElevator = this.detectClosestElevator(targetFloorNumber);
     
     if (closestElevator && targetFloor) {
-      closestElevator.onCall(targetFloor, params);
+      this._onCallCallback?.();
+      closestElevator.call(targetFloor);
       return closestElevator;
     } else {
       return false
