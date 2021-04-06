@@ -44,7 +44,7 @@ export class Floor {
     return this;
   }
 
-  onElevatorMovedFromFloor() {
+  onElevatorLeavedFloor() {
     this._floorState = "call";
     this._onMoveCallback?.(this);
     return this;

@@ -4,15 +4,14 @@ type ElevatorState = "busy" | "arrived" | "free";
 
 export class Elevator {
   private _elevatorState: ElevatorState = "free";
-  private _currentFloor: number;
+  private _targetFloor: Floor | undefined;
 
   private _onCallCallback?: (updatedElevator: Elevator ,params?: any) => any;
   private _onMoveCallback?: (updatedElevator: Elevator ,params?: any) => any;
   private _onArriveCallback?: (updatedElevator: Elevator, params?: any) => any;
   private _onBackToFreeCallback?: (updatedElevator: Elevator, params?: any) => any;
 
-  constructor(readonly id: string, private _targetFloor: Floor) {
-    this._currentFloor = _targetFloor.floorNumber;
+  constructor(readonly id: string, private _currentFloor: number) {
     return
   }
 
@@ -45,53 +44,69 @@ export class Elevator {
   }
   
   private onMove() {
-    
-    const arrived = this._currentFloor === this._targetFloor.floorNumber 
-    if (arrived) {
-      this.onArrive();
-      return this;
-    } else {
-      if (this._currentFloor > this._targetFloor.floorNumber) {
-        this._currentFloor--;
-      } else if (this._currentFloor < this._targetFloor.floorNumber) {
-        this._currentFloor++;
+    if (this._targetFloor) {
+      console.log('moving');
+      const arrived = this._currentFloor === this._targetFloor.floorNumber 
+      if (arrived) {
+        this.onArrive();
+        return this;
+      } else {
+        if (this._currentFloor > this._targetFloor.floorNumber) {
+          this._currentFloor--;
+        } else if (this._currentFloor < this._targetFloor.floorNumber) {
+          this._currentFloor++;
+        }
+        
+        this._onMoveCallback?.(this);
+        setTimeout(() => {
+          this.onMove();
+        }, 1000)
       }
-      
-      this._onMoveCallback?.(this);
-      setTimeout(() => {
-        this.onMove();
-      }, 1000)
+    } else {
+      return false;
     }
   }
 
   private onArrive() {
-    this._elevatorState = "arrived";
-    this._onArriveCallback?.(this);
-    this.targetFloor.onElevatorArrivedToFloor();
-    
-    setTimeout(() => {
-      this.backToBeFree();
-    }, 1000)
+    if(this._targetFloor) {
+
+      this._elevatorState = "arrived";
+      this._onArriveCallback?.(this);
+      this._targetFloor.onElevatorArrivedToFloor();
+      
+      setTimeout(() => {
+        this.backToBeFree();
+      }, 1000)
+    } else {
+      return false;
+    }
   }
 
   private backToBeFree() {
+    if (this._targetFloor) {
+
       this._elevatorState = "free"
+      this._targetFloor.backToBeFree();
+      this._targetFloor = undefined;
       this._onBackToFreeCallback?.(this);
-      this.targetFloor.backToBeFree();
+    } else {
+      return false
+    }
   }
 
   call(newTargetFloor: Floor) {
-      if (newTargetFloor.floorNumber === this._targetFloor.floorNumber) {
+      const freeElevatorIsInFloor = (newTargetFloor.floorNumber === this._currentFloor) && this._elevatorState === "free"; 
+      if (freeElevatorIsInFloor) {
         this._elevatorState = "busy";
         this._onCallCallback?.(this);
         this.onArrive();
       } else {
-      this._targetFloor.onElevatorMovedFromFloor();
-      this._targetFloor = newTargetFloor
-      this._elevatorState = "busy";
-      this.targetFloor.onElevatorCalledToFloor();
-      this._onCallCallback?.(this);
-      this.onMove();
+        this._targetFloor?.onElevatorLeavedFloor();
+        this._targetFloor = newTargetFloor
+        this._elevatorState = "busy";
+        this._targetFloor.onElevatorCalledToFloor();
+        this._onCallCallback?.(this);
+        this.onMove();
       }
   }
  

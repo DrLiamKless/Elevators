@@ -23,8 +23,7 @@ export class Building {
     this.numberOfElevators = numberOfElevators;
     this.numberOfFloors = numberOfFloors;
     this.floors = Building.designFloorsArray(numberOfFloors, numberOfElevators);
-    const initialFloor = this.floors[Building.initialElevatorsFloor];
-    this.elevators = Building.designElevatorsArray(numberOfElevators, initialFloor);
+    this.elevators = Building.designElevatorsArray(numberOfElevators, Building.initialElevatorsFloor);
   }
 
   private static validateNumberOfFloors(floors: number) {
@@ -40,7 +39,7 @@ export class Building {
     }
   }
 
-  private static designElevatorsArray(numberOfElevators: number, initialFloor: Floor) {
+  private static designElevatorsArray(numberOfElevators: number, initialFloor: number) {
     const elevatorsArray: Elevator[] = [];
     for (let i = 0; i < numberOfElevators ; i++) {
       const elevator = new Elevator(`elevatorId${i}`, initialFloor);
@@ -60,12 +59,12 @@ export class Building {
     return [...floorsArray];
   };
 
-  private detectClosestElevator(targetFloor: number) {
+  private detectClosestElevator(targetFloorNumber: number) {
     let closestElevator: Elevator | undefined;
     let closestDistance: number;
 
     const existingElevatorInFloor = this.elevators.find(elevator => {
-      return (elevator.currentFloor === targetFloor) && (elevator.elevatorState === "free")
+      return (elevator.currentFloor === targetFloorNumber) && (elevator.elevatorState === "free")
     });
     if(existingElevatorInFloor) {
       return existingElevatorInFloor;
@@ -74,12 +73,10 @@ export class Building {
         if (elevator.elevatorState === "free") {
           if (!closestDistance) {
             closestElevator = elevator
-            closestDistance = Math.abs(elevator.currentFloor - targetFloor);
-            return;
-          } else if (Math.abs(elevator.currentFloor - targetFloor) < closestDistance) {
+            closestDistance = Math.abs(elevator.currentFloor - targetFloorNumber);
+          } else if (Math.abs(elevator.currentFloor - targetFloorNumber) < closestDistance) {
             closestElevator = elevator;
-            closestDistance = Math.abs(elevator.currentFloor - targetFloor);
-            return;
+            closestDistance = Math.abs(elevator.currentFloor - targetFloorNumber);
           }
         } else {
           return;
@@ -98,22 +95,18 @@ export class Building {
   private addToOrderQueue(floorNumber: number) {
     if (!this._ordersQueue.includes(floorNumber)) {
       this._ordersQueue.push(floorNumber);
-      const targetFloor = this.floors.find(floor => floor.floorNumber === floorNumber);
-      targetFloor?.onElevatorCalledToFloor();
+      const floorAdded = this.floors.find(floor => floor.floorNumber === floorNumber);
+      floorAdded?.onElevatorCalledToFloor();
     }
   }
 
   private getOrderFromQueue() {
-    if (!!this._ordersQueue.length) {
       const firstOrder = this._ordersQueue.shift();
       if (typeof firstOrder === 'number') {
         return firstOrder
       } else {
         return false
       }
-    } else {
-      return false
-    }
   }
 
   set onCallCallback(fn: (params?: any) => any) {
@@ -125,12 +118,11 @@ export class Building {
   ) {
     const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
     const closestElevator = this.detectClosestElevator(targetFloorNumber);
-    
     if (closestElevator && targetFloor) {
       this._onCallCallback?.();
       closestElevator.call(targetFloor);
       return closestElevator;
-    } else {
+    } else if (targetFloor) {
       this.addToOrderQueue(targetFloorNumber)
       return false
       // TODO: add queue storage of the calls

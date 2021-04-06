@@ -31,8 +31,8 @@ function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevat
 
     elevator.onBackToFreeCallback = (updatedElevator: Elevator) => {
       // console.log('elevator is free again on floor!', updatedElevator.currentFloor);
-      answerOrderFromQueue();
       setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
+      answerOrderFromQueue();
     }
 
     setElevatorState(elevator);
