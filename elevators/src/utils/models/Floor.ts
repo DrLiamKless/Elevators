@@ -1,4 +1,4 @@
-export type FloorState = "waiting" | "arrived" | "free";
+export type FloorState = "waiting" | "arrived" | "call";
 
 export class Floor {
   private _floorState: FloorState;
@@ -9,11 +9,7 @@ export class Floor {
   private _onBackToFreeCallback?: (updatedFloor: Floor, params?: any) => any;
 
   constructor(readonly floorNumber: number, readonly numberOfElevators: number) {
-    if (floorNumber === 0) {
-      this._floorState = "arrived";
-    } else {
-      this._floorState = "free";
-    }
+    this._floorState = "call";
   }
 
   get floorState() {
@@ -49,13 +45,13 @@ export class Floor {
   }
 
   onElevatorMovedFromFloor() {
-    this._floorState = "free";
+    this._floorState = "call";
     this._onMoveCallback?.(this);
     return this;
   }
 
   backToBeFree() {
-    this._floorState = "free"
+    this._floorState = "call"
     this._onBackToFreeCallback?.(this);
 }
  

@@ -84,13 +84,12 @@ export class Elevator {
       if (newTargetFloor.floorNumber === this._targetFloor.floorNumber) {
         this._elevatorState = "busy";
         this._onCallCallback?.(this);
-        setTimeout(() => {
-          this.onArrive();
-        }, 1000);
+        this.onArrive();
       } else {
       this._targetFloor.onElevatorMovedFromFloor();
       this._targetFloor = newTargetFloor
       this._elevatorState = "busy";
+      this.targetFloor.onElevatorCalledToFloor();
       this._onCallCallback?.(this);
       this.onMove();
       }

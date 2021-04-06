@@ -98,6 +98,8 @@ export class Building {
   private addToOrderQueue(floorNumber: number) {
     if (!this._ordersQueue.includes(floorNumber)) {
       this._ordersQueue.push(floorNumber);
+      const targetFloor = this.floors.find(floor => floor.floorNumber === floorNumber);
+      targetFloor?.onElevatorCalledToFloor();
     }
   }
 

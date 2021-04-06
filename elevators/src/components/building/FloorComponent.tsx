@@ -6,7 +6,6 @@ import CallButton from '../CallButton';
 
 const Shafts = styled.div`
   width: 100%;
-  border: 1px solid red;
   display: flex;
   flex-direction: row;
 `
@@ -16,14 +15,13 @@ const FloorWrapper = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
 `
 
 const Shaft = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 1px solid black;
-  background-color: white;
+  max-width: 20%;
+  min-width: 20%;
+  height: 30px;
+  border: 1px solid grey;
   padding: 5px;
 `
 
@@ -71,7 +69,7 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
         <FloorWrapper>
           <Shafts>
             {shafts.map(shaft => 
-              <Shaft>shaft</Shaft>
+              <Shaft />
             )}
           </Shafts>
           <CallButton floorState={floorState?.floorState} onClick={onElevatorCallToFloor}/>
