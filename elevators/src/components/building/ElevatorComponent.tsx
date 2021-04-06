@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Elevator } from '../../utils/models/Elevator';
+import { elevatorSVG } from '../images'
 
-const Root = styled.div`
-  font-size: 13px;
+const Root = styled.div<({currentFloor: number})>`
   max-width: 20%;
   min-width: 20%;
-  max-height: 30px;
-  text-align: center;
-`
+  height: 50px;
+  align-self: center;
+  transition: all 1s ease-in-out;
+  ${({currentFloor}) => `transform: translateY${`(-${(currentFloor+1)*100}%);`}`}; 
+`;
+
+const ElevatorIcon = styled.img`
+  width: 70%;
+  height: 70%;
+  transform: translateY(25%);
+`;
 
 function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevator, answerOrderFromQueue: () => false | Elevator}) {
   const [elevatorState, setElevatorState] = useState<Elevator>();
@@ -41,10 +49,11 @@ function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevat
   return (
     <>
     {elevatorState && (
-      <Root>
-        <p>
+      <Root currentFloor={elevatorState.currentFloor}>
+        <ElevatorIcon src={elevatorSVG} />
+        {/* <p>
           {`${elevatorState.currentFloor} - ${elevatorState.elevatorState}`}
-        </p>
+        </p> */}
       </Root>
       )}
     </>

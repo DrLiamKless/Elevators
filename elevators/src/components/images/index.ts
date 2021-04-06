@@ -1,0 +1,1 @@
+export { default as elevatorSVG } from './elevator.svg'

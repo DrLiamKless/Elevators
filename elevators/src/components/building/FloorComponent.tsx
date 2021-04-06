@@ -22,7 +22,7 @@ const Shaft = styled.div`
   max-width: 100%;
   min-width: 100%;
   height: 50px;
-  border: 1px solid grey;
+  box-shadow: 1px 1px grey
 `
 
 type FloorComponentProps = {
