@@ -35,11 +35,6 @@ function BuildingStructure({ building }: {building: Building}) {
   const [buildingState, setBuildingState] = useState<Building>();
 
   useEffect(() => {
-    // TODO: Here set the onCallCallback, etc...
-    building.onCallCallback = () => {
-      // console.log('building just called the elvator!');
-    }
-
     setBuildingState(building);
   }, [])
 

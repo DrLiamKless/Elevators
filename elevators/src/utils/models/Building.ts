@@ -130,7 +130,6 @@ export class Building {
       } else {
         this.addToOrderQueue(targetFloorNumber)
         return false
-        // TODO: add queue storage of the calls
       }
     } return false;
   }

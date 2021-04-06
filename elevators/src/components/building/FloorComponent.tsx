@@ -50,11 +50,13 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
   useEffect(() => {
     floor.onArriveCallback = (updatedFloor: Floor) => {
       // console.log(`floor ${updatedFloor.floorNumber} accepted elevator!`);
+      // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
 
     floor.onCallCallback = (updatedFloor: Floor) => {
       // console.log(`floor ${updatedFloor.floorNumber} called an elevator!`);
+      // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
 

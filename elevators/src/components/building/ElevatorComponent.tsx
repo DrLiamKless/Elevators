@@ -9,7 +9,7 @@ const Root = styled.div<({currentFloor: number})>`
   min-width: 20%;
   height: 50px;
   align-self: center;
-  transition: all 1.001s linear;
+  transition: all 1.01s linear;
   ${({currentFloor}) => `transform: translateY${`(-${(currentFloor+1)*100}%);`}`}; 
 `;
 
@@ -37,6 +37,7 @@ function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevat
   useEffect(() => {
     elevator.onArriveCallback = (updatedElevator: Elevator) => {
       // console.log('elevator arrived to floor!', updatedElevator.currentFloor);
+      // TODO: add sound here
       setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
     }
 

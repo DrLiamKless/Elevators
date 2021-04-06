@@ -14,6 +14,7 @@ const Root = styled.div`
 function Game() {
   const [building, setBuilding] = useState(new Building(10, 5));
   
+  // TODO: Add Open screen in order to decide how many floors and elevators there are;
   return (
     <Root>
       <BuildingStructure building={building} />
