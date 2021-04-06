@@ -115,16 +115,23 @@ export class Building {
   callElevator(
     targetFloorNumber: number, 
   ) {
-    const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
-    const closestElevator = this.detectClosestElevator(targetFloorNumber);
-    if (closestElevator && targetFloor) {
-      this._onCallCallback?.();
-      closestElevator.call(targetFloor);
-      return closestElevator;
-    } else if (targetFloor) {
-      this.addToOrderQueue(targetFloorNumber)
-      return false
-      // TODO: add queue storage of the calls
+    const targetFloor = this.floors.find(floor => {
+      return (floor.floorNumber === targetFloorNumber) && floor.floorState === "call"}
+    );
+    if (targetFloor?.floorState === "call") {
+      const closestElevator = this.detectClosestElevator(targetFloorNumber);
+      // const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
+      if (closestElevator) {
+        if (targetFloor) {
+          this._onCallCallback?.();
+          closestElevator.call(targetFloor);
+          return closestElevator;
+        }
+      } else {
+        this.addToOrderQueue(targetFloorNumber)
+        return false
+        // TODO: add queue storage of the calls
+      }
     }
   }
 
