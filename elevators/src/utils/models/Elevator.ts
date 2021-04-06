@@ -45,7 +45,6 @@ export class Elevator {
   
   private onMove() {
     if (this._targetFloor) {
-      console.log('moving');
       const arrived = this._currentFloor === this._targetFloor.floorNumber 
       if (arrived) {
         this.onArrive();

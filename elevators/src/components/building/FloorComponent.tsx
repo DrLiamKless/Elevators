@@ -11,18 +11,18 @@ const Shafts = styled.div`
 `
 
 const FloorWrapper = styled.div`
-  width: 100%;
+  max-width: 20%;
+  min-width: 20%;
   height: 100%;
   display: flex;
   align-items: center;
 `
 
 const Shaft = styled.div`
-  max-width: 20%;
-  min-width: 20%;
-  height: 30px;
+  max-width: 100%;
+  min-width: 100%;
+  height: 50px;
   border: 1px solid grey;
-  padding: 5px;
 `
 
 type FloorComponentProps = {

@@ -7,7 +7,7 @@ const Button = styled.button`
   font-size: 10px;
   position: absolute;
   right: 0;
-  transform: translateX(300%);
+  transform: translateX(200%);
   outline: none;
   border: 0.5px solid grey;
   padding: 5px;

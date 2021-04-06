@@ -4,9 +4,9 @@ import { Elevator } from '../../utils/models/Elevator';
 
 const Root = styled.div`
   font-size: 13px;
-  padding: 5px;
   max-width: 20%;
   min-width: 20%;
+  max-height: 30px;
   text-align: center;
 `
 
@@ -43,7 +43,7 @@ function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevat
     {elevatorState && (
       <Root>
         <p>
-          {`floor ${elevatorState.currentFloor}. and my state is ${elevatorState.elevatorState}`}
+          {`${elevatorState.currentFloor} - ${elevatorState.elevatorState}`}
         </p>
       </Root>
       )}

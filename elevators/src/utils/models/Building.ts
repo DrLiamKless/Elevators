@@ -87,7 +87,6 @@ export class Building {
     if (closestElevator) {
       return closestElevator
     } else { 
-      console.log('didnt find');
       return false 
     };
   };
