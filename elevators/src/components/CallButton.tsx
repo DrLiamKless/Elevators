@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import { FloorState } from '../utils/models/Floor';
 
 const Button = styled.button`
-  width: 100%;
-  height: 100%;
+  width: fit-content;
+  height: fit-content;
   font-size: 5px;
+  position: absolute;
+  right: -50px;
 `
 
 function CallButton ({floorState, ...rest }: {floorState: FloorState} & ComponentPropsWithoutRef<"button">) {

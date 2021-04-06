@@ -5,17 +5,25 @@ import ElevatorComponent from './ElevatorComponent';
 import FloorComponent from './FloorComponent';
 
 const ElevatorsWrapper = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
+  width: 60%;
+  bottom: 0px;
 `
 
 const FloorsWrapper = styled.div`
   display: flex;
   flex-direction: column-reverse;
+  position: relative;
+  width: 60%;
 `
 
 const Root = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 `
 
 function BuildingStructure({ building }: {building: Building}) {

@@ -5,12 +5,12 @@ import BuildingStructure from './building/BuildingStructure';
 
 
 const Root = styled.div`
-  width: fit-content;
-  height: fit-content;
+  width: 100vw;
+  height: 100vh;
 `
 
 function Game() {
-  const [building, setBuilding] = useState(new Building(6, 3));
+  const [building, setBuilding] = useState(new Building(10, 5));
   
   return (
     <Root>
