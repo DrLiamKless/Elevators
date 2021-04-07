@@ -17,9 +17,9 @@ const ElevatorSvg = styled.svg.attrs({
   xmlns: "http://www.w3.org/2000/svg", 
   viewBox: "0 0 50 50",
 })<({elevatorState: ElevatorState})>`
-  width: 70%;
-  height: 70%;
-  transform: translateY(25%);
+  width: 50%;
+  height: 50%;
+  transform: translateY(50%);
   fill: ${({elevatorState}) => renderElevatorColor(elevatorState)};
 `;
 

@@ -7,8 +7,8 @@ import FloorComponent from './FloorComponent';
 const ElevatorsWrapper = styled.div`
   position: relative;
   display: flex;
-  max-width: 60%;
-  min-width: 60%;
+  max-width: 45%;
+  min-width: 45%;
   bottom: 0px;
 `
 
@@ -16,8 +16,8 @@ const FloorsWrapper = styled.div`
   display: flex;
   flex-direction: column-reverse;
   position: relative;
-  max-width: 60%;
-  min-width: 60%;
+  max-width: 45%;
+  min-width: 45%;
   background-color: white;
 `
 

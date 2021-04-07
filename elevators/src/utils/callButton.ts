@@ -6,7 +6,7 @@ export const renderButtonStyling = (floorState: FloorState) => {
   } else if (floorState === "waiting") {
     return 'background-color: #ED484D; border: 1px solid grey;'
   } else if (floorState === "arrived") {
-    return 'background-color: unset; opacity: 1; border: 1px solid green;'
+    return 'background-color: unset; opacity: 1; border: 1px solid #5BCD88;'
   }
 }
 
