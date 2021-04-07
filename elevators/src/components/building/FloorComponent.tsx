@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { renderFloorNumber } from '../../utils/floor';
-import { Elevator } from '../../utils/models/Elevator';
-import { Floor } from '../../utils/models/Floor';
+import { Elevator } from '../../models/Elevator';
+import { Floor } from '../../models/Floor';
 import CallButton from '../CallButton';
+import ShaftComponent from './ShaftComponent';
 
 const Shafts = styled.div`
   width: 100%;
@@ -17,14 +18,6 @@ const FloorWrapper = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-`
-
-const Shaft = styled.div`
-  max-width: 100%;
-  min-width: 100%;
-  height: 50px;
-  border: 1px solid #EEEEEE;
-  box-sizing: border-box;
 `
 
 const FloorNumber = styled.div`
@@ -41,15 +34,16 @@ const FloorNumber = styled.div`
 
 type FloorComponentProps = {
   floor: Floor,
-  onElevatorCall: (floorNumber: number) => false | Elevator | undefined;
+  onElevatorCall: (floor: Floor) => false | Elevator | undefined;
 }
 
 function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
   const [floorState, setFloorState] = useState(floor);
 
   useEffect(() => {
-    floor.onArriveCallback = (updatedFloor: Floor) => {
-      // console.log(`floor ${updatedFloor.floorNumber} accepted elevator!`);
+    
+    floor.onInviteCallback = (updatedFloor: Floor) => {
+      // console.log(`floor ${updatedFloor.floorNumber} called an elevator!`);
       // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
@@ -59,9 +53,15 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
       // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
-
+    
     floor.onMoveCallback = (updatedFloor: Floor) => {
       // console.log(`floor ${updatedFloor.floorNumber} just sayd goodbye from elevator!`);
+      setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
+    }
+
+    floor.onArriveCallback = (updatedFloor: Floor) => {
+      // console.log(`floor ${updatedFloor.floorNumber} accepted elevator!`);
+      // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
     
@@ -75,7 +75,7 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
 
   const onElevatorCallToFloor = () => {
     if (floorState.floorState === "call") {
-      const elevatorOnTheWay = onElevatorCall(floorState.floorNumber);
+      onElevatorCall(floorState);
     }
   }
   
@@ -87,8 +87,12 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
         <FloorWrapper>
           <FloorNumber>{renderFloorNumber(floorState.floorNumber)}</FloorNumber>
           <Shafts>
-            {shafts.map(shaft => 
-              <Shaft />
+            {shafts.map((shaft, i) => 
+              <ShaftComponent
+                key={i}
+                elevatorOnWay={floorState.elevatorOnWay?.shaftNumber === i}
+                floorState={floorState.floorState}
+              />
             )}
           </Shafts>
           <CallButton floorState={floorState?.floorState} onClick={onElevatorCallToFloor}/>

@@ -13,7 +13,7 @@ export class Building {
   readonly numberOfElevators: number;
 
   private _ordersQueue: number[] = [];
-  private _onCallCallback?: (params?: any) => any;
+  private _onCallCallback?: (params?: void) => void;
 
   constructor(
       numberOfFloors: number, 
@@ -44,7 +44,7 @@ export class Building {
   private static designElevatorsArray(numberOfElevators: number, initialFloor: number) {
     const elevatorsArray: Elevator[] = [];
     for (let i = 0; i < numberOfElevators ; i++) {
-      const elevator = new Elevator(`elevatorId${i}`, initialFloor);
+      const elevator = new Elevator(i, initialFloor);
       elevatorsArray.push(elevator);
     }
 
@@ -93,35 +93,32 @@ export class Building {
     };
   };
 
-  private addToOrderQueue(floorNumber: number) {
-    if (!this._ordersQueue.includes(floorNumber)) {
-      this._ordersQueue.push(floorNumber);
-      const floorAdded = this.floors.find(floor => floor.floorNumber === floorNumber);
-      floorAdded?.onElevatorCalledToFloor();
+  private addToOrderQueue(floorToAdd: Floor) {
+    if (!this._ordersQueue.includes(floorToAdd.floorNumber)) {
+      this._ordersQueue.push(floorToAdd.floorNumber);
+      const floorAdded = this.floors.find(floor => floor.floorNumber === floorToAdd.floorNumber);
+      floorAdded?.onFloorInvitedElevator();
     }
   }
 
   private getOrderFromQueue() {
       const firstOrder = this._ordersQueue.shift();
       if (typeof firstOrder === 'number') {
-        return firstOrder
+        const floorOrdered = this.floors.find(floor => floor.floorNumber === firstOrder);
+        return floorOrdered
       } else {
         return false
       }
   }
 
-  set onCallCallback(fn: (params?: any) => any) {
-    this._onCallCallback = () => fn(this);
+  set onCallCallback(fn: () => void) {
+    this._onCallCallback = () => fn();
   };
 
-  callElevator(
-    targetFloorNumber: number, 
-  ) {
-    const targetFloor = this.floors.find(floor => {
-      return (floor.floorNumber === targetFloorNumber) && floor.floorState !== "arrived"}
-    );
+  callElevator(targetFloor: Floor) {
     if (targetFloor) {
-      const closestElevator = this.detectClosestElevator(targetFloorNumber);
+      targetFloor.onFloorInvitedElevator();
+      const closestElevator = this.detectClosestElevator(targetFloor.floorNumber);
       // const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
       if (closestElevator) {
         if (targetFloor) {
@@ -130,7 +127,7 @@ export class Building {
           return closestElevator;
         }
       } else {
-        this.addToOrderQueue(targetFloorNumber)
+        this.addToOrderQueue(targetFloor)
         return false
       }
     } return false;
@@ -138,7 +135,7 @@ export class Building {
 
   callElevatorForQueueOrder() {
     const orderFromQueue = this.getOrderFromQueue();
-    if (typeof orderFromQueue === 'number') {
+    if (orderFromQueue) {
       const elevatorCalled = this.callElevator(orderFromQueue);
       return elevatorCalled;
     } else {

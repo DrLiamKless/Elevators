@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { renderElevatorColor } from '../../utils/elevator';
-import { Elevator, ElevatorState } from '../../utils/models/Elevator';
+import { Elevator, ElevatorState } from '../../models/Elevator';
 import { elevatorSVG } from '../images'
 
 const Root = styled.div<({currentFloor: number})>`
@@ -19,7 +19,7 @@ const ElevatorSvg = styled.svg.attrs({
 })<({elevatorState: ElevatorState})>`
   width: 50%;
   height: 50%;
-  transform: translateY(50%);
+  transform: translateY(90%);
   fill: ${({elevatorState}) => renderElevatorColor(elevatorState)};
 `;
 

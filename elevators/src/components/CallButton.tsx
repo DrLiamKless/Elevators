@@ -1,7 +1,7 @@
 import React, { ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
 import { renderButtonStyling, renderButtonTitleStyling } from '../utils/callButton';
-import { FloorState } from '../utils/models/Floor';
+import { FloorState } from '../models/Floor';
 
 const Button = styled.button<({floorState: FloorState})>`
   width: 60px;

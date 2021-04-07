@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Building } from '../utils/models/Building';
+import { Building } from '../models/Building';
 import BuildingStructure from './building/BuildingStructure';
 
 

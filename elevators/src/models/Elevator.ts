@@ -6,12 +6,12 @@ export class Elevator {
   private _elevatorState: ElevatorState = "free";
   private _targetFloor: Floor | undefined;
 
-  private _onCallCallback?: (updatedElevator: Elevator ,params?: any) => any;
-  private _onMoveCallback?: (updatedElevator: Elevator ,params?: any) => any;
-  private _onArriveCallback?: (updatedElevator: Elevator, params?: any) => any;
-  private _onBackToFreeCallback?: (updatedElevator: Elevator, params?: any) => any;
+  private _onCallCallback?: (updatedElevator: Elevator) => void;
+  private _onMoveCallback?: (updatedElevator: Elevator) => void;
+  private _onArriveCallback?: (updatedElevator: Elevator) => void;
+  private _onBackToFreeCallback?: (updatedElevator: Elevator) => void;
 
-  constructor(readonly id: string, private _currentFloor: number) {
+  constructor(readonly shaftNumber: number, private _currentFloor: number) {
     return
   }
 
@@ -27,19 +27,19 @@ export class Elevator {
     return this._currentFloor
   };
 
-  set onCallCallback(fn: (updatedElevator: Elevator ,params?: any) => any) {
+  set onCallCallback(fn: (updatedElevator: Elevator) => void) {
     this._onCallCallback = (elevator: Elevator) => fn(elevator);
   }
  
-  set onMoveCallback(fn: (updatedElevator: Elevator ,params?: any) => any) {
+  set onMoveCallback(fn: (updatedElevator: Elevator) => void) {
     this._onMoveCallback = (elevator: Elevator) => fn(elevator);
   }
 
-  set onArriveCallback(fn: (updatedElevator: Elevator ,params?: any) => any) {
+  set onArriveCallback(fn: (updatedElevator: Elevator) => void) {
     this._onArriveCallback = (elevator: Elevator) => fn(elevator);
   }
 
-  set onBackToFreeCallback(fn: (updatedElevator: Elevator ,params?: any) => any) {
+  set onBackToFreeCallback(fn: (updatedElevator: Elevator) => void) {
     this._onBackToFreeCallback = (elevator: Elevator) => fn(elevator);
   }
   
@@ -97,14 +97,14 @@ export class Elevator {
       if (theElevatorAlreadyOnFloor) {
         this._elevatorState = "busy";
         this._targetFloor = newTargetFloor
-        this._targetFloor.onElevatorCalledToFloor();
+        this._targetFloor.onElevatorCalledToFloor(this);
         this._onCallCallback?.(this);
         this.onArrive();
       } else {
         this._targetFloor?.onElevatorLeavedFloor();
         this._targetFloor = newTargetFloor
         this._elevatorState = "busy";
-        this._targetFloor.onElevatorCalledToFloor();
+        this._targetFloor.onElevatorCalledToFloor(this);
         this._onCallCallback?.(this);
         this.onMove();
       }

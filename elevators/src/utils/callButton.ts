@@ -1,4 +1,4 @@
-import { FloorState } from "./models/Floor"
+import { FloorState } from "../models/Floor"
 
 export const renderButtonStyling = (floorState: FloorState) => {
   if (floorState === "call") {

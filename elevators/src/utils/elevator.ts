@@ -1,4 +1,4 @@
-import { ElevatorState } from "./models/Elevator";
+import { ElevatorState } from "../models/Elevator";
 
 export const renderElevatorColor = (elevatorState: ElevatorState) => {
   if(elevatorState === "free") return 'black';
