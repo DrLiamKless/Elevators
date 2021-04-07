@@ -4,7 +4,7 @@ import { renderButtonStyling, renderButtonTitleStyling } from '../utils/callButt
 import { FloorState } from '../utils/models/Floor';
 
 const Button = styled.button<({floorState: FloorState})>`
-  width: 80px;
+  width: 60px;
   font-size: 10px;
   position: absolute;
   text-align: center;
@@ -13,7 +13,7 @@ const Button = styled.button<({floorState: FloorState})>`
   transform: translateX(150%);
   outline: none;
   box-sizing: border-box;
-  padding: 5px 15px;
+  padding: 5px;
   border-radius: 2px;
   ${({floorState}) => `${renderButtonStyling(floorState)} ${renderButtonTitleStyling(floorState)}`}
 `

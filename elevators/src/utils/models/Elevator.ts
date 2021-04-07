@@ -75,7 +75,7 @@ export class Elevator {
       
       setTimeout(() => {
         this.backToBeFree();
-      }, 1000)
+      }, 2000)
     } else {
       return false;
     }

@@ -1,6 +1,8 @@
 import { Elevator } from "./Elevator";
 import { Floor } from "./Floor";
 
+// TODO: make classes more clear;
+
 export class Building {
   static readonly minimumFloors: number = 4;
   static readonly initialElevatorsFloor: number = 0;
