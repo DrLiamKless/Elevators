@@ -1,8 +1,6 @@
 import { Elevator } from "./Elevator";
 import { Floor } from "./Floor";
 
-// TODO: make classes more clear;
-
 export class Building {
   static readonly minimumFloors: number = 4;
   static readonly initialElevatorsFloor: number = 0;
@@ -13,7 +11,7 @@ export class Building {
   readonly numberOfElevators: number;
 
   private _ordersQueue: number[] = [];
-  private _onCallCallback?: (params?: void) => void;
+  private _onCallCallback?: () => void;
 
   constructor(
       numberOfFloors: number, 
@@ -123,7 +121,7 @@ export class Building {
       if (closestElevator) {
         if (targetFloor) {
           this._onCallCallback?.();
-          closestElevator.call(targetFloor);
+          closestElevator.onCall(targetFloor);
           return closestElevator;
         }
       } else {

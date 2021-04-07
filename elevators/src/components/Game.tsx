@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Building } from '../models/Building';
 import BuildingStructure from './building/BuildingStructure';
 
-
 const Root = styled.div`
   width: 100%;
   height: 100%;

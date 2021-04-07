@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { renderElevatorColor } from '../../utils/elevator';
 import { Elevator, ElevatorState } from '../../models/Elevator';
-import { elevatorSVG } from '../images'
+import { elevatorSVG } from '../../images'
 
 const Root = styled.div<({currentFloor: number})>`
   max-width: 20%;
@@ -35,28 +35,25 @@ function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevat
   const [elevatorState, setElevatorState] = useState<Elevator>();
 
   useEffect(() => {
-    elevator.onArriveCallback = (updatedElevator: Elevator) => {
-      // console.log('elevator arrived to floor!', updatedElevator.currentFloor);
-      // TODO: add sound here
-      setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
-    }
-
+    
     elevator.onCallCallback = (updatedElevator: Elevator) => {
-      // console.log('elevator called to floor!', updatedElevator.targetFloor.floorNumber);
       setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
     }
-
+    
     elevator.onMoveCallback = (updatedElevator: Elevator) => {
-      // console.log('elevator moved to floor!', updatedElevator.currentFloor);
       setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
     }
-
+    
     elevator.onBackToFreeCallback = (updatedElevator: Elevator) => {
-      // console.log('elevator is free again on floor!', updatedElevator.currentFloor);
       setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
       answerOrderFromQueue();
     }
-
+    
+    elevator.onArriveCallback = (updatedElevator: Elevator) => {
+      // TODO: add sound here
+      setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
+    }
+    
     setElevatorState(elevator);
   }, [])
 
@@ -65,9 +62,6 @@ function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevat
     {elevatorState && (
       <Root currentFloor={elevatorState.currentFloor}>
         <ElevatorIcon elevatorState={elevator.elevatorState}/>
-        {/* <p>
-          {`${elevatorState.currentFloor} - ${elevatorState.elevatorState}`}
-        </p> */}
       </Root>
       )}
     </>

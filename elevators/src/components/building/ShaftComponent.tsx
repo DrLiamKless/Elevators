@@ -2,7 +2,7 @@ import { start } from 'node:repl';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { FloorState } from '../../models/Floor';
-import useTimer from '../hooks/timer';
+import useTimer from '../../hooks/timer';
 
 const Shaft = styled.div`
   max-width: 100%;
@@ -18,7 +18,7 @@ type ShaftComponentProps = {
 }
 
 function ShaftComponent({ floorState, elevatorOnWay }: ShaftComponentProps) {
-  const { timer, handleStart, handlePause, handleResume, handleReset } = useTimer();
+  const { timer, handleStart, handlePause, handleReset } = useTimer();
 
   useEffect(() => {
     if(floorState === "waiting") {

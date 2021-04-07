@@ -29,7 +29,6 @@ const FloorNumber = styled.div`
   font-weight: 600;
   padding: 0px 10px;
   transform: translateX(-100%);
-  /* padding: 5px; */
 `
 
 type FloorComponentProps = {
@@ -43,25 +42,18 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
   useEffect(() => {
     
     floor.onInviteCallback = (updatedFloor: Floor) => {
-      // console.log(`floor ${updatedFloor.floorNumber} called an elevator!`);
-      // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
 
     floor.onCallCallback = (updatedFloor: Floor) => {
-      // console.log(`floor ${updatedFloor.floorNumber} called an elevator!`);
-      // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
     
     floor.onMoveCallback = (updatedFloor: Floor) => {
-      // console.log(`floor ${updatedFloor.floorNumber} just sayd goodbye from elevator!`);
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
 
     floor.onArriveCallback = (updatedFloor: Floor) => {
-      // console.log(`floor ${updatedFloor.floorNumber} accepted elevator!`);
-      // TODO: add time measuring from start to end
       setFloorState(() => Object.assign(Object.create(updatedFloor), updatedFloor));
     }
     

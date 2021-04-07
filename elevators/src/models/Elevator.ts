@@ -92,7 +92,7 @@ export class Elevator {
     }
   }
 
-  call(newTargetFloor: Floor) {
+  onCall(newTargetFloor: Floor) {
       const theElevatorAlreadyOnFloor = (newTargetFloor.floorNumber === this._currentFloor) && this._elevatorState === "free"; 
       if (theElevatorAlreadyOnFloor) {
         this._elevatorState = "busy";
