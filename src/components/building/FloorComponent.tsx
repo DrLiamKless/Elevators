@@ -8,11 +8,12 @@ import ShaftComponent from './ShaftComponent';
 
 // Styled Components
 const FloorRoot = styled.div`
-  max-width: 20%;
-  min-width: 20%;
+  max-width: 100%;
+  min-width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
+  position: relative;
 `;
 
 const FloorNumber = styled.div`
@@ -74,11 +75,12 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
     }
   };
   
-  const shafts = new Array(floor.numberOfElevators).fill(0);
+  const shafts = new Array(floorState.numberOfElevators).fill(0);
 
   return (
     <>
       {floorState && (
+        <>
         <FloorRoot>
           <FloorNumber>{floorUtils.renderFloorNumber(floorState.floorNumber)}</FloorNumber>
           <ShaftsWrapper>
@@ -92,6 +94,7 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
           </ShaftsWrapper>
           <CallButton floorState={floorState?.floorState} onClick={onElevatorCallToFloor}/>
         </FloorRoot>
+        </>
         )}
     </>
   );

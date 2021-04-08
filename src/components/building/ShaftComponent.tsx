@@ -5,8 +5,7 @@ import useTimer from '../../hooks/useTimer';
 
 // Styled Components
 const ShaftRoot = styled.div`
-  max-width: 100%;
-  min-width: 100%;
+  width: 100%;
   height: 50px;
   border: 1px solid #EEEEEE;
   box-sizing: border-box;

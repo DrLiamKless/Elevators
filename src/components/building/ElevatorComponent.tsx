@@ -7,16 +7,15 @@ import useAudio from '../../hooks/useAudio';
 
 // Styled Components
 const ElevatorRoot = styled.div<({currentFloor: number})>`
-  max-width: 20%;
-  min-width: 20%;
+  max-width: 50%;
+  min-width: 10%;
   height: 50px;
-  align-self: center;
   transition: all 1.01s linear;
   ${({currentFloor}) => `transform: translateY${`(-${(currentFloor+1)*100}%);`}`}; 
 
   @media (max-width:1150px) {
-    max-width: 20%;
-    min-width: 20%;
+    max-width: 50%;
+    min-width: 10%;
     height: 30px;
   }
 `;

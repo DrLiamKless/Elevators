@@ -3,6 +3,7 @@ import { Floor } from "./Floor";
 
 export class Building {
   static readonly minimumFloors: number = 4;
+  static readonly minimumElevators: number = 2;
   static readonly initialElevatorsFloor: number = 0;
   
   // use map to get the wanted floor faster and save ".find()";
@@ -19,7 +20,7 @@ export class Building {
       numberOfElevators: number
     ) {
     Building.validateNumberOfFloors(numberOfFloors);
-    Building.validateNumberOfElevators(numberOfElevators);
+    Building.validateNumberOfElevators(numberOfElevators, numberOfFloors);
 
     this.numberOfElevators = numberOfElevators;
     this.numberOfFloors = numberOfFloors;
@@ -34,8 +35,8 @@ export class Building {
     }
   }
 
-  private static validateNumberOfElevators(numberOfElevators: number) {
-    if (numberOfElevators < 2) {
+  private static validateNumberOfElevators(numberOfElevators: number, numberOfFloors: number) {
+    if (numberOfElevators < Building.minimumElevators && numberOfElevators > numberOfFloors) {
       throw Error("The amount of elevators given is not valid");
     }
   }

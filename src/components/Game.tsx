@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Building } from '../models/Building';
 import BuildingComponent from './building/BuildingComponent';
+import SelectPage from './SelectPage';
 
 // Styled Components
 const Root = styled.div`
@@ -17,15 +18,24 @@ const Title = styled.div`
 `
 
 function Game() {
-  const [building, setBuilding] = useState(new Building(10, 5));
+  const [building, setBuilding] = useState<Building>();
 
-  // TODO: Add Open screen in order to decide how many floors and elevators there are;
-  // TODO: Add title;
+  const onSubmit = (floorsAmount: number, elevatorsAmount: number) => {
+    setBuilding(() => new Building(floorsAmount, elevatorsAmount))
+  }
+
   return (
-    <Root>
-      <Title>Elevators</Title>
-      <BuildingComponent building={building} />
-    </Root>
+    <>
+    { building ? (
+      <Root>
+        <Title>Elevators</Title>
+        <BuildingComponent building={building} />
+      </Root>
+    ) : (
+      <SelectPage onSubmit={onSubmit} />
+    )
+    }
+    </>
   );
 };
 
