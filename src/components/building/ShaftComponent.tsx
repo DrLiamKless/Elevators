@@ -10,6 +10,10 @@ const ShaftRoot = styled.div`
   height: 50px;
   border: 1px solid #EEEEEE;
   box-sizing: border-box;
+
+  @media (max-width:1150px) {
+    height: 30px;
+  }
 `;
 
 type ShaftComponentProps = {

@@ -7,8 +7,14 @@ import BuildingComponent from './building/BuildingComponent';
 const Root = styled.div`
   width: 100%;
   height: 100%;
-  justify-self: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
+
+const Title = styled.div`
+  font-weight: 600;
+`
 
 function Game() {
   const [building, setBuilding] = useState(new Building(10, 5));
@@ -17,6 +23,7 @@ function Game() {
   // TODO: Add title;
   return (
     <Root>
+      <Title>Elevators</Title>
       <BuildingComponent building={building} />
     </Root>
   );

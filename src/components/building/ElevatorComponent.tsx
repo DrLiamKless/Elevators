@@ -13,6 +13,12 @@ const ElevatorRoot = styled.div<({currentFloor: number})>`
   align-self: center;
   transition: all 1.01s linear;
   ${({currentFloor}) => `transform: translateY${`(-${(currentFloor+1)*100}%);`}`}; 
+
+  @media (max-width:1150px) {
+    max-width: 20%;
+    min-width: 20%;
+    height: 30px;
+  }
 `;
 
 const ElevatorSvg = styled.svg.attrs({
