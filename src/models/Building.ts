@@ -5,8 +5,9 @@ export class Building {
   static readonly minimumFloors: number = 4;
   static readonly initialElevatorsFloor: number = 0;
   
+  // use map to get the wanted floor faster and save ".find()";
+  readonly floors: Map<number, Floor>;
   readonly elevators: Elevator[];
-  readonly floors: Floor[];
   readonly numberOfFloors: number;
   readonly numberOfElevators: number;
 
@@ -22,7 +23,7 @@ export class Building {
 
     this.numberOfElevators = numberOfElevators;
     this.numberOfFloors = numberOfFloors;
-    this.floors = Building.designFloorsArray(numberOfFloors, numberOfElevators);
+    this.floors = Building.designFloorsMap(numberOfFloors, numberOfElevators);
     this.elevators = Building.designElevatorsArray(numberOfElevators, Building.initialElevatorsFloor);
   }
 
@@ -46,17 +47,17 @@ export class Building {
       elevatorsArray.push(elevator);
     }
 
-    return [...elevatorsArray];
+    return elevatorsArray;
   }
 
-  private static designFloorsArray(numberOfFloors: number, numberOfElevators: number) {
-    const floorsArray: Floor[] = [];
+  private static designFloorsMap(numberOfFloors: number, numberOfElevators: number) {
+    const floorsMap = new Map<number, Floor>();
     for (let i = 0; i < numberOfFloors ; i++) {
       const floor = new Floor(i, numberOfElevators);
-      floorsArray.push(floor);
+      floorsMap.set(i ,floor);
     }
 
-    return [...floorsArray];
+    return floorsMap;
   };
 
   private detectClosestElevator(targetFloorNumber: number) {
@@ -94,7 +95,7 @@ export class Building {
   private addToOrderQueue(floorToAdd: Floor) {
     if (!this._ordersQueue.includes(floorToAdd.floorNumber)) {
       this._ordersQueue.push(floorToAdd.floorNumber);
-      const floorAdded = this.floors.find(floor => floor.floorNumber === floorToAdd.floorNumber);
+      const floorAdded = this.floors.get(floorToAdd.floorNumber);
       floorAdded?.onFloorInvitedElevator();
     }
   }
@@ -102,7 +103,7 @@ export class Building {
   private getOrderFromQueue() {
       const firstOrder = this._ordersQueue.shift();
       if (typeof firstOrder === 'number') {
-        const floorOrdered = this.floors.find(floor => floor.floorNumber === firstOrder);
+        const floorOrdered = this.floors.get(firstOrder);
         return floorOrdered
       } else {
         return false
@@ -117,7 +118,6 @@ export class Building {
     if (targetFloor) {
       targetFloor.onFloorInvitedElevator();
       const closestElevator = this.detectClosestElevator(targetFloor.floorNumber);
-      // const targetFloor = this.floors.find(floor => floor.floorNumber === targetFloorNumber);
       if (closestElevator) {
         if (targetFloor) {
           this._onCallCallback?.();

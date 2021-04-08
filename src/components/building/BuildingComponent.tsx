@@ -57,7 +57,7 @@ function BuildingComponent({ building }: {building: Building}) {
   return (
     <BuildingRoot>  
       <FloorsWrapper>
-        {building.floors.map(floor => <FloorComponent onElevatorCall={onElevatorCall} floor={floor}/> )}
+        {Array.from(building.floors.values()).map(floor => <FloorComponent onElevatorCall={onElevatorCall} floor={floor}/> )}
       </FloorsWrapper>
       
       <ElevatorsWrapper>
