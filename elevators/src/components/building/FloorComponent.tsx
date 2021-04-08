@@ -92,7 +92,7 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
           </ShaftsWrapper>
           <CallButton floorState={floorState?.floorState} onClick={onElevatorCallToFloor}/>
         </FloorRoot>
-        )};
+        )}
     </>
   );
 };
