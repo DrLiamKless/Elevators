@@ -22,7 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "run": "npm run build && cd server && npm start",
+    "elevators": "npm run build && cd server && npm start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
