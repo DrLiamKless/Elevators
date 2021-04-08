@@ -2,7 +2,7 @@ import { start } from 'node:repl';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { FloorState } from '../../models/Floor';
-import useTimer from '../../hooks/timer';
+import useTimer from '../../hooks/useTimer';
 
 const Shaft = styled.div`
   max-width: 100%;

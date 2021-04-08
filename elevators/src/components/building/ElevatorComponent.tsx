@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { renderElevatorColor } from '../../utils/elevator';
 import { Elevator, ElevatorState } from '../../models/Elevator';
-import { elevatorSVG } from '../../images'
+import elevatorArrivedSound from '../../audio/elevator-arrived-sound.mp3';
+import useAudio from '../../hooks/useAudio';
 
 const Root = styled.div<({currentFloor: number})>`
   max-width: 20%;
@@ -33,6 +34,7 @@ const ElevatorIcon = ({elevatorState}: {elevatorState: ElevatorState}) => {
 
 function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevator, answerOrderFromQueue: () => false | Elevator}) {
   const [elevatorState, setElevatorState] = useState<Elevator>();
+  const { toggleAudio } = useAudio(elevatorArrivedSound);
 
   useEffect(() => {
     
@@ -50,7 +52,7 @@ function ElevatorComponent({ elevator, answerOrderFromQueue }: {elevator: Elevat
     }
     
     elevator.onArriveCallback = (updatedElevator: Elevator) => {
-      // TODO: add sound here
+      toggleAudio()
       setElevatorState(Object.assign(Object.create(updatedElevator), updatedElevator));
     }
     
