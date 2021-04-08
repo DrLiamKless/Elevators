@@ -1,8 +1,9 @@
 import React, { ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
-import { renderButtonStyling, renderButtonTitleStyling } from '../utils/callButton';
+import { callButtonUtils } from '../utils';
 import { FloorState } from '../models/Floor';
 
+// Styled Components
 const Button = styled.button<({floorState: FloorState})>`
   width: 60px;
   font-size: 10px;
@@ -15,8 +16,8 @@ const Button = styled.button<({floorState: FloorState})>`
   box-sizing: border-box;
   padding: 5px;
   border-radius: 2px;
-  ${({floorState}) => `${renderButtonStyling(floorState)} ${renderButtonTitleStyling(floorState)}`}
-`
+  ${({floorState}) => `${callButtonUtils.renderButtonStyling(floorState)} ${callButtonUtils.renderButtonTitleStyling(floorState)}`}
+`;
 
 function CallButton ({floorState, ...rest }: {floorState: FloorState} & ComponentPropsWithoutRef<"button">) {
   return (
@@ -24,6 +25,6 @@ function CallButton ({floorState, ...rest }: {floorState: FloorState} & Componen
       {floorState}
     </Button>
   );
-}
+};
 
 export default CallButton;

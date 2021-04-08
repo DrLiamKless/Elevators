@@ -4,4 +4,4 @@ export const renderFloorNumber = (floorNumber: number) => {
   if (floorNumber === 2) return '2nd';
   if (floorNumber === 3) return '3rd';
   if (floorNumber > 3) return `${floorNumber}th`;
-}
+};

@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { renderFloorNumber } from '../../utils/floor';
+import { floorUtils } from '../../utils';
 import { Elevator } from '../../models/Elevator';
 import { Floor } from '../../models/Floor';
 import CallButton from '../CallButton';
 import ShaftComponent from './ShaftComponent';
 
-const Shafts = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-`
-
-const FloorWrapper = styled.div`
+// Styled Components
+const FloorRoot = styled.div`
   max-width: 20%;
   min-width: 20%;
   height: 100%;
   display: flex;
   align-items: center;
-`
+`;
 
 const FloorNumber = styled.div`
   width: 100px;
@@ -29,12 +24,20 @@ const FloorNumber = styled.div`
   font-weight: 600;
   padding: 0px 10px;
   transform: translateX(-100%);
-`
+`;
+
+const ShaftsWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+`;
+
+
 
 type FloorComponentProps = {
   floor: Floor,
   onElevatorCall: (floor: Floor) => false | Elevator | undefined;
-}
+};
 
 function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
   const [floorState, setFloorState] = useState(floor);
@@ -63,22 +66,22 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
     }
 
     setFloorState(floor);
-  }, [])
+  }, []);
 
   const onElevatorCallToFloor = () => {
     if (floorState.floorState === "call") {
       onElevatorCall(floorState);
     }
-  }
+  };
   
   const shafts = new Array(floor.numberOfElevators).fill(0);
 
   return (
     <>
       {floorState && (
-        <FloorWrapper>
-          <FloorNumber>{renderFloorNumber(floorState.floorNumber)}</FloorNumber>
-          <Shafts>
+        <FloorRoot>
+          <FloorNumber>{floorUtils.renderFloorNumber(floorState.floorNumber)}</FloorNumber>
+          <ShaftsWrapper>
             {shafts.map((shaft, i) => 
               <ShaftComponent
                 key={i}
@@ -86,12 +89,12 @@ function FloorComponent({ floor, onElevatorCall }: FloorComponentProps) {
                 floorState={floorState.floorState}
               />
             )}
-          </Shafts>
+          </ShaftsWrapper>
           <CallButton floorState={floorState?.floorState} onClick={onElevatorCallToFloor}/>
-        </FloorWrapper>
-        )}
+        </FloorRoot>
+        )};
     </>
   );
-}
+};
 
 export default FloorComponent;
